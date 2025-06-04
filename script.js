@@ -20,6 +20,8 @@ const presetPhotoBtn = document.getElementById('preset-photo');
 const previewWrapper = document.getElementById('preview-wrapper');
 const mainEl = document.querySelector('main');
 
+let uploadedFileName = 'mosaic';
+
 // Span outputs
 const frameSizeVal = document.getElementById('frame-size-val');
 const borderRatioVal = document.getElementById('border-ratio-val');
@@ -188,7 +190,7 @@ downloadBtn.addEventListener('click', () => {
   off.toBlob(blob => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'mosaic.png';
+    a.download = `${uploadedFileName}_preview_${w}x${h}.png`;
     a.click();
     URL.revokeObjectURL(a.href);
   });
@@ -199,17 +201,27 @@ presetPhotoBtn.addEventListener('click', () => applyPreset(PRESETS.photo));
 // Handle file selection (via input or drop)
 function handleFile(file) {
   if (!file) return;
-  dropMessage.style.display = 'none';
-  originalImg.style.display = 'none';
   const url = URL.createObjectURL(file);
-  originalImg.onload = () => {
-    refresh();
-    URL.revokeObjectURL(url);
-    originalImg.style.display = 'block';
-    previewWrapper.classList.remove('hidden');
-    mainEl.classList.remove('no-preview');
+  const img = new Image();
+  img.onload = () => {
+    if (img.width > 600 || img.height > 600) {
+      alert('The image is too large; make sure to Upload the miniature not the source image');
+      URL.revokeObjectURL(url);
+      return;
+    }
+    uploadedFileName = file.name.replace(/\.png$/i, '') || 'mosaic';
+    dropMessage.style.display = 'none';
+    originalImg.style.display = 'none';
+    originalImg.onload = () => {
+      refresh();
+      URL.revokeObjectURL(url);
+      originalImg.style.display = 'block';
+      previewWrapper.classList.remove('hidden');
+      mainEl.classList.remove('no-preview');
+    };
+    originalImg.src = url;
   };
-  originalImg.src = url;
+  img.src = url;
 }
 
 fileInput.addEventListener('change', e => {

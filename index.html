@@ -27,8 +27,11 @@
           <button id="preset-photo">Photorealistic</button>
         </div>
         <div class="setting"><label for="plastic-color">Plastic color</label><input type="color" id="plastic-color" value="#191919"></div>
-        <div class="setting"><label for="frame-color">Frame color</label><input type="color" id="frame-color" value="#000000"></div>
-        <div class="setting"><label for="frame-size">Frame size (<span id="frame-size-val">8</span> px)</label><input type="range" id="frame-size" min="0" max="30" value="8"></div>
+        <div id="frame-group" class="setting-group">
+          <h4>Frame</h4>
+          <div class="setting"><label for="frame-color">Frame color</label><input type="color" id="frame-color" value="#000000"></div>
+          <div class="setting"><label for="frame-size">Frame size (<span id="frame-size-val">8</span> px)</label><input type="range" id="frame-size" min="0" max="30" value="8"></div>
+        </div>
         <div class="setting"><label for="border-ratio">Border thickness (<span id="border-ratio-val">0.15</span>)</label><input type="range" id="border-ratio" min="0" max="1" step="0.01" value="0.15"></div>
         <div class="setting"><label for="brightness-shift">Brightness shift (<span id="brightness-shift-val">10</span>%)</label><input type="range" id="brightness-shift" min="0" max="60" value="10"></div>
         <div class="setting"><label for="displacement-ratio">Displacement (<span id="displacement-ratio-val">0.05</span>)</label><input type="range" id="displacement-ratio" min="0" max="1" step="0.01" value="0.05"></div>
