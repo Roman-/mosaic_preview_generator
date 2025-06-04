@@ -210,7 +210,6 @@ function handleFile(file) {
       return;
     }
     uploadedFileName = file.name.replace(/\.png$/i, '') || 'mosaic';
-    dropMessage.style.display = 'none';
     originalImg.style.display = 'none';
     originalImg.onload = () => {
       refresh();
@@ -228,23 +227,23 @@ fileInput.addEventListener('change', e => {
   handleFile(e.target.files[0]);
 });
 
-const originalWrapper = document.getElementById('original-wrapper');
+const uploadArea = document.getElementById('upload-area');
 // Open file dialog on click
-originalWrapper.addEventListener('click', () => fileInput.click());
+uploadArea.addEventListener('click', () => fileInput.click());
 // Drag-and-drop handlers
 ['dragenter', 'dragover'].forEach(event => {
-  originalWrapper.addEventListener(event, e => {
+  uploadArea.addEventListener(event, e => {
     e.preventDefault();
-    originalWrapper.classList.add('dragover');
+    uploadArea.classList.add('dragover');
   });
 });
 ['dragleave', 'drop'].forEach(event => {
-  originalWrapper.addEventListener(event, e => {
+  uploadArea.addEventListener(event, e => {
     e.preventDefault();
-    originalWrapper.classList.remove('dragover');
+    uploadArea.classList.remove('dragover');
   });
 });
-originalWrapper.addEventListener('drop', e => {
+uploadArea.addEventListener('drop', e => {
   handleFile(e.dataTransfer.files[0]);
 });
 
