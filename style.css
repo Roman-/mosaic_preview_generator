@@ -27,6 +27,10 @@ header .back-arrow {
   color: inherit;
   text-decoration: none;
   font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
 }
 
 header h1 {
@@ -62,6 +66,10 @@ main.no-preview {
   text-align: center;
   font-size: 0.9rem;
   color: #333;
+}
+
+main:not(.no-preview) #intro {
+  display: none;
 }
 
 #upload-area {
