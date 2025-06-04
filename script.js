@@ -55,11 +55,11 @@ const PRESETS = {
   photo: {
     plasticColor: '#191919',
     frameColor: '#000000',
-    frameSize: 8,
+    frameSize: 0,
     borderRatio: 0.15,
     brightnessShift: 10,
     displacementRatio: 0.05,
-    roundnessRatio: 0
+    roundnessRatio: 0.2
   }
 };
 
@@ -95,7 +95,8 @@ function drawRounded(ctx,x,y,w,h,r){
 function drawMosaic(img){
   if(!img.complete||!img.naturalWidth) return;
   const w = img.width, h = img.height;
-  const frameSize = +frameSizeInput.value;
+  const frameSizeRatio = +frameSizeInput.value;
+  const frameSize = frameSizeRatio * w * tileSize * 0.5;
   const frameColor= frameColorInput.value;
   const plasticColor = plasticColorInput.value;
   const borderRatio = +borderRatioInput.value;
