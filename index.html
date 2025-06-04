@@ -4,13 +4,17 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cube Mosaic Previewer</title>
+  <title>Mosaic Preview Generator</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>Cube Mosaic Previewer</header>
+  <header>
+    <a class="back-arrow" href="https://bestsiteever.net/" title="Back to bestsiteever">&larr;</a>
+    <h1>Mosaic Preview Generator</h1>
+  </header>
   <main class="no-preview">
       <section id="original-wrapper">
+        <p id="intro">Upload pixel art miniatures from <a href="https://bestsiteever.net/mosaic">bestsiteever.net/mosaic</a> and get a semi-realistic preview.</p>
         <div id="upload-area">
           <input type="file" accept="image/png" id="file-input" />
           <img id="original-image" alt="Miniature preview" />
@@ -22,12 +26,12 @@
             <button id="preset-grid">Grid</button>
             <button id="preset-photo">Photorealistic</button>
           </div>
-        <div class="setting"><label for="plastic-color">Color</label><input type="color" id="plastic-color" value="#191919"></div>
+        <div class="setting"><label for="plastic-color">Plastic color</label><input type="color" id="plastic-color" value="#191919"></div>
         <div class="setting"><label for="border-ratio">Borders<br><small id="border-ratio-val">0.15</small></label><input type="range" id="border-ratio" min="0" max="1" step="0.01" value="0.15"></div>
         <div class="setting"><label for="brightness-shift">Darken<br><small id="brightness-shift-val">10</small></label><input type="range" id="brightness-shift" min="0" max="60" value="10"></div>
         <div class="setting"><label for="displacement-ratio">Move<br><small id="displacement-ratio-val">0.05</small></label><input type="range" id="displacement-ratio" min="0" max="1" step="0.01" value="0.05"></div>
         <div class="setting"><label for="roundness-ratio">Round corners<br><small id="roundness-ratio-val">0</small></label><input type="range" id="roundness-ratio" min="0" max="1" step="0.01" value="0"></div>
-        <div class="setting"><label for="frame-size">Frame size<br><small id="frame-size-val">0</small></label><input type="range" id="frame-size" min="0" max="1" step="0.01" value="0"></div>
+        <div class="setting"><label for="frame-size">Add frame<br><small id="frame-size-val">0</small></label><input type="range" id="frame-size" min="0" max="1" step="0.01" value="0"></div>
         <div class="setting"><label for="frame-color">Frame color</label><input type="color" id="frame-color" value="#000000"></div>
           <div class="setting"><label for="output-height">Image height (px)</label><input type="number" id="output-height" value="2000" min="1"></div>
         </div>
@@ -41,7 +45,11 @@
         <canvas id="preview-canvas"></canvas>
       </section>
   </main>
-  <footer>&copy; 2025 <a target="_blank" href="https://roman.bz">Roman Strakhov</a></footer>
+  <footer>
+    <span>From <a target="_blank" href="https://roman.bz">Roman Strakhov</a> with 💟</span>
+    &mdash;
+    yeah baby, this is <a target="_blank" href="https://bestsiteever.net/">bestsiteever</a>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>
