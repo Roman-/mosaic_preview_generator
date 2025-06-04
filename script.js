@@ -16,6 +16,7 @@ const outputHeightInput = document.getElementById('output-height');
 const downloadBtn = document.getElementById('download-btn');
 const exportDimensions = document.getElementById('export-dimensions');
 const presetZeroBtn = document.getElementById('preset-zero');
+const presetGridBtn = document.getElementById('preset-grid');
 const presetPhotoBtn = document.getElementById('preset-photo');
 const previewWrapper = document.getElementById('preview-wrapper');
 const mainEl = document.querySelector('main');
@@ -38,6 +39,15 @@ const PRESETS = {
     frameColor: '#000000',
     frameSize: 0,
     borderRatio: 0,
+    brightnessShift: 0,
+    displacementRatio: 0,
+    roundnessRatio: 0
+  },
+  grid: {
+    plasticColor: '#000000',
+    frameColor: '#000000',
+    frameSize: 0,
+    borderRatio: 0.2,
     brightnessShift: 0,
     displacementRatio: 0,
     roundnessRatio: 0
@@ -196,6 +206,7 @@ downloadBtn.addEventListener('click', () => {
   });
 });
 presetZeroBtn.addEventListener('click', () => applyPreset(PRESETS.zero));
+presetGridBtn.addEventListener('click', () => applyPreset(PRESETS.grid));
 presetPhotoBtn.addEventListener('click', () => applyPreset(PRESETS.photo));
 
 // Handle file selection (via input or drop)
