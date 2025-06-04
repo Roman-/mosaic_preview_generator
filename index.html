@@ -11,12 +11,14 @@
     header{ padding:1rem 2rem; background:#111827; color:#f9fafb; text-align:center; font-size:1.5rem; }
     main{ flex:1; padding:2rem; display:grid; grid-template-columns:1fr 2fr; gap:2rem; }
     #original-wrapper,#preview-wrapper{ background:#fff; border-radius:0.75rem; box-shadow:0 4px 10px rgba(0,0,0,.1); padding:1rem; display:flex; flex-direction:column; align-items:center; }
+    #preview-wrapper{ max-height:90vh; overflow:auto; }
     #original-image{ display: none; max-width:100%; image-rendering:pixelated; }
     #drop-message { color: #666; text-align: center; margin: 1rem 0; }
     #settings{ margin-top:1rem; width:100%; }
     .setting{ margin-bottom:1rem; display:flex; align-items:center; justify-content:space-between; gap:0.75rem; }
     .setting label{ flex:1; font-size:.9rem; }
     .setting input[type="range"]{ flex:2; }
+    #preset-buttons button{ flex:1; }
     canvas{ max-width:100%; height:auto; border-radius:0.5rem; }
     footer{ text-align:center; padding:.5rem; background:#e5e7eb; font-size:.8rem; }
     #original-wrapper { cursor: pointer; }
@@ -39,6 +41,10 @@
       <canvas id="preview-canvas"></canvas>
       <div id="settings">
         <h3>Settings</h3>
+        <div class="setting" id="preset-buttons">
+          <button id="preset-zero">Reset to zero</button>
+          <button id="preset-photo">Photorealistic</button>
+        </div>
         <div class="setting"><label for="plastic-color">Plastic color</label><input type="color" id="plastic-color" value="#191919"></div>
         <div class="setting"><label for="frame-color">Frame color</label><input type="color" id="frame-color" value="#000000"></div>
         <div class="setting"><label for="frame-size">Frame size (<span id="frame-size-val">8</span> px)</label><input type="range" id="frame-size" min="0" max="30" value="8"></div>
@@ -46,6 +52,11 @@
         <div class="setting"><label for="brightness-shift">Brightness shift (<span id="brightness-shift-val">10</span>%)</label><input type="range" id="brightness-shift" min="0" max="60" value="10"></div>
         <div class="setting"><label for="displacement-ratio">Displacement (<span id="displacement-ratio-val">0.05</span>)</label><input type="range" id="displacement-ratio" min="0" max="1" step="0.01" value="0.05"></div>
         <div class="setting"><label for="roundness-ratio">Corner roundness (<span id="roundness-ratio-val">0</span>)</label><input type="range" id="roundness-ratio" min="0" max="1" step="0.01" value="0"></div>
+        <div class="setting"><label for="output-height">Image height (px)</label><input type="number" id="output-height" value="2000" min="1"></div>
+        <div class="setting" id="download-wrapper" style="justify-content:flex-start;gap:0.75rem;">
+          <button id="download-btn" style="flex:1;width:100%;padding:0.5rem 1rem;font-size:1rem;">Download</button>
+          <span id="export-dimensions"></span>
+        </div>
       </div>
     </section>
   </main>
@@ -66,6 +77,11 @@
     const brightnessShiftInput = document.getElementById('brightness-shift');
     const displacementRatioInput = document.getElementById('displacement-ratio');
     const roundnessRatioInput = document.getElementById('roundness-ratio');
+    const outputHeightInput = document.getElementById('output-height');
+    const downloadBtn = document.getElementById('download-btn');
+    const exportDimensions = document.getElementById('export-dimensions');
+    const presetZeroBtn = document.getElementById('preset-zero');
+    const presetPhotoBtn = document.getElementById('preset-photo');
 
     // Span outputs
     const frameSizeVal = document.getElementById('frame-size-val');
@@ -76,6 +92,27 @@
 
     // Fixed params
     const tileSize = 20;
+
+    const PRESETS = {
+      zero: {
+        plasticColor: '#000000',
+        frameColor: '#000000',
+        frameSize: 0,
+        borderRatio: 0,
+        brightnessShift: 0,
+        displacementRatio: 0,
+        roundnessRatio: 0
+      },
+      photo: {
+        plasticColor: '#191919',
+        frameColor: '#000000',
+        frameSize: 8,
+        borderRatio: 0.15,
+        brightnessShift: 10,
+        displacementRatio: 0.05,
+        roundnessRatio: 0
+      }
+    };
 
     // === Helpers ===
     function adjustBrightness(rgba, shiftPercent){
@@ -156,7 +193,37 @@
       }
     }
 
-    function refresh(){ drawMosaic(originalImg); }
+    function refresh(){
+      drawMosaic(originalImg);
+      updateDimensions();
+    }
+
+    function updateSliderDisplays(){
+      frameSizeVal.textContent=frameSizeInput.value;
+      borderRatioVal.textContent=borderRatioInput.value;
+      brightnessShiftVal.textContent=brightnessShiftInput.value;
+      displacementRatioVal.textContent=displacementRatioInput.value;
+      roundnessRatioVal.textContent=roundnessRatioInput.value;
+    }
+
+    function updateDimensions(){
+      const h=+outputHeightInput.value||0;
+      const ratio=canvas.width&&canvas.height?canvas.width/canvas.height:1;
+      const w=Math.round(h*ratio);
+      exportDimensions.textContent=`${w} x ${h}px`;
+    }
+
+    function applyPreset(p){
+      plasticColorInput.value=p.plasticColor;
+      frameColorInput.value=p.frameColor;
+      frameSizeInput.value=p.frameSize;
+      borderRatioInput.value=p.borderRatio;
+      brightnessShiftInput.value=p.brightnessShift;
+      displacementRatioInput.value=p.displacementRatio;
+      roundnessRatioInput.value=p.roundnessRatio;
+      updateSliderDisplays();
+      refresh();
+    }
 
     // Slider linkage
     [
@@ -172,6 +239,25 @@
     });
 
     [plasticColorInput,frameColorInput].forEach(el=>el.addEventListener('input',refresh));
+    outputHeightInput.addEventListener('input', updateDimensions);
+    downloadBtn.addEventListener('click', () => {
+      const h = +outputHeightInput.value || canvas.height;
+      const ratio = canvas.width && canvas.height ? canvas.width / canvas.height : 1;
+      const w = Math.round(h * ratio);
+      const off = document.createElement('canvas');
+      off.width = w;
+      off.height = h;
+      off.getContext('2d').drawImage(canvas, 0, 0, w, h);
+      off.toBlob(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'mosaic.png';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    });
+    presetZeroBtn.addEventListener('click', () => applyPreset(PRESETS.zero));
+    presetPhotoBtn.addEventListener('click', () => applyPreset(PRESETS.photo));
 
     // Handle file selection (via input or drop)
     function handleFile(file) {
@@ -211,6 +297,8 @@
     originalWrapper.addEventListener('drop', e => {
       handleFile(e.dataTransfer.files[0]);
     });
+
+    updateDimensions();
   </script>
 </body>
 </html>
