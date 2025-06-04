@@ -1,7 +1,8 @@
-# [bestsiteever.net/mosaic_preview](https://bestsiteever.net/mosaic_preview)
-## Mosaic preview generator
+# Mosaic preview generator
+## [bestsiteever.net/mosaic_preview](https://bestsiteever.net/mosaic_preview)
 
-A simple viewer for cube mosaic designs. Upload miniature from https://bestsiteever.net/mosaic, get a semi-realistic preview of the mosaic design.
+- Upload pixel art miniature from https://bestsiteever.net/mosaic
+- Get a semi-realistic preview for the mosaic design
 
 ![Tiger](img/tiger.jpg)
 
