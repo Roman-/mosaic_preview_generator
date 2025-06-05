@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mosaic Preview Generator</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v2" />
 </head>
 <body>
   <header>
@@ -14,7 +14,7 @@
   </header>
   <main class="no-preview">
       <section id="original-wrapper">
-        <p id="intro">Upload pixel art miniatures from <a href="https://bestsiteever.net/mosaic">bestsiteever.net/mosaic</a> and get a semi-realistic preview.</p>
+        <p id="intro">Upload pixel art miniatures from <a target="_blank" href="https://bestsiteever.net/mosaic">bestsiteever.net/mosaic</a> and get a semi-realistic preview.</p>
         <div id="upload-area">
           <input type="file" accept="image/png" id="file-input" />
           <img id="original-image" alt="Miniature preview" />
@@ -24,7 +24,7 @@
           <div class="setting" id="preset-buttons">
             <button id="preset-zero">Original</button>
             <button id="preset-grid">Grid</button>
-            <button id="preset-photo">Photorealistic</button>
+            <button id="preset-photo">Realistic</button>
           </div>
         <div class="setting"><label for="plastic-color">Plastic color</label><input type="color" id="plastic-color" value="#191919"></div>
         <div class="setting"><label for="border-ratio">Borders<br><small id="border-ratio-val">0.15</small></label><input type="range" id="border-ratio" min="0" max="1" step="0.01" value="0.15"></div>
